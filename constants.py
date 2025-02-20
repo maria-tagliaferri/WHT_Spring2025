@@ -27,22 +27,34 @@ NUM_SUBJECT = 19
 
 """ Number of exercises in the dataset
 """
-NUM_EXERCISE = 37
+NUM_EXERCISE = 8#37
 
 
 """ Exercise groups 
 	Run clustering.py to obtain this
 """
-CLUSTER = [[0, 3, 6, 7, 24, 27, 28, 29, 30, 35],	# cluster 1
-			[13, 14, 15, 16, 25], 					# cluster 2
-			[12, 17, 20, 31, 32, 33, 34, 36],		# cluster 3
-			[22],									# cluster 4
-			[18, 19, 23, 26],						# cluster 5
-			[21],									# cluster 6
-			[10, 11],								# cluster 7
-			[8, 9],									# cluster 8
-			[4, 5],									# cluster 9
-			[1, 2]]									# cluster 10
+
+CLUSTER = [
+    [0, 3, 6, 7, 24, 27, 28, 29, 30, 35],  # cluster 0
+    [13, 14, 15, 16, 25],                 # cluster 1
+    [12, 17, 20, 31, 32, 33, 34, 36],     # cluster 2
+    [22],                                 # cluster 3
+    [18, 19, 23, 26],                     # cluster 4
+    [21],                                 # cluster 5
+    [10, 11],                             # cluster 6
+    [1, 2, 4, 5, 8, 9]                    # cluster 7 (combined old clusters 8, 9, 10)
+]
+
+# CLUSTER = [[0, 3, 6, 7, 24, 27, 28, 29, 30, 35],	# cluster 1
+# 			[13, 14, 15, 16, 25], 					# cluster 2
+# 			[12, 17, 20, 31, 32, 33, 34, 36],		# cluster 3
+# 			[22],									# cluster 4
+# 			[18, 19, 23, 26],						# cluster 5
+# 			[21],									# cluster 6
+# 			[10, 11],								# cluster 7
+# 			[8, 9],									# cluster 8
+# 			[4, 5],									# cluster 9
+# 			[1, 2]]									# cluster 10
 
 
 """ Fixed hyper-parameters of the models
@@ -88,14 +100,18 @@ TUNED_HP = [[],
 
 """ Information
 """
+#SUBJECT_LIST = ['SUB01', 'SUB02', 'SUB03', 'SUB04']
+
 SUBJECT_LIST = ['SUB01', 'SUB02', 'SUB03', 'SUB04', 'SUB05', 'SUB06', 'SUB07', 'SUB08', 'SUB09',
                 'SUB10', 'SUB11', 'SUB12', 'SUB13', 'SUB14', 'SUB15', 'SUB16', 'SUB17', 'SUB18', 'SUB19']
 
-EXERCISE_LIST = ['BulgSq', 'CMJDL', 'CMJSL', 'DeclineSq', 'DropJumpDL', 'DropJumpSL', 'DropLandDL', 'DropLandSL',
-                 'FwHop', 'FwHopFast', 'FwJump', 'FwJumpFast', 'HeelRaise', 'LatHop', 'LatHopFast', 
-                 'LatJump', 'LatJumpFast', 'Lunge', 'MaxHop', 'MaxJump', 'Pose', 'Run', 'RunCut', 'RunDec',
-                 'SpainSq', 'SplitJump', 'SportJump', 'SqDL', 'SqHalfDL', 'SqHalfSL', 'SqSL', 
-                 'StepDnH', 'StepDnL', 'StepUpH', 'StepUpL', 'SumoSq', 'Walk']
+EXERCISE_LIST = ['BulgSq', 'CMJDL', 'Run', 'SplitJump', 'SqDL', 'StepDnL', 'StepUpL', 'Walk']
+
+# EXERCISE_LIST = ['BulgSq', 'CMJDL', 'CMJSL', 'DeclineSq', 'DropJumpDL', 'DropJumpSL', 'DropLandDL', 'DropLandSL',
+#                  'FwHop', 'FwHopFast', 'FwJump', 'FwJumpFast', 'HeelRaise', 'LatHop', 'LatHopFast', 
+#                  'LatJump', 'LatJumpFast', 'Lunge', 'MaxHop', 'MaxJump', 'Pose', 'Run', 'RunCut', 'RunDec',
+#                  'SpainSq', 'SplitJump', 'SportJump', 'SqDL', 'SqHalfDL', 'SqHalfSL', 'SqSL', 
+#                  'StepDnH', 'StepDnL', 'StepUpH', 'StepUpL', 'SumoSq', 'Walk']
 
 
 """ MAPPING OF SENSOR POSITION FOR USER INPUTS

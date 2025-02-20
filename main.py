@@ -10,6 +10,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 import pickle
+import time
 
 from torch import nn
 
@@ -20,6 +21,7 @@ from utils.eval import *
 from utils.preprocessing import *
 
 from model.Type3 import *
+
 
 
 def parse_net_arguments():
@@ -37,6 +39,12 @@ def parse_net_arguments():
 
 def main_net(args):
     args  = parse_net_arguments()
+
+    timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
+    save_dir = f'models/{timestamp}'
+    os.makedirs(save_dir, exist_ok=True)
+    print(f"Saving models in: {save_dir}")
+
 
     data_type = args.data_type
     if data_type == 'imu':
@@ -57,7 +65,7 @@ def main_net(args):
 
     pred_type = args.pred_type
     if pred_type == 'exercises':
-        num_classes = 37
+        num_classes = 8
     
     else:
         num_classes = 10
@@ -66,7 +74,14 @@ def main_net(args):
         sample_list = pickle.load(f)
 
     all_subject_id = list(range(1, 20))
-    device         = 'cuda' if torch.cuda.is_available() else 'cpu'
+    #device         = 'cuda' if torch.cuda.is_available() else 'cpu'
+    if torch.cuda.is_available():
+        device = 'cuda'
+    elif torch.backends.mps.is_available():
+        device = 'mps'
+    else:
+        device = 'cpu'
+
     print(f'Using {device} device')
 
     perf_train_acc, perf_test_acc       = [], []
@@ -78,10 +93,10 @@ def main_net(args):
         train_list, test_list = [], []
 
         for sample in sample_list:
-            if sample[0, constants.ID_SUBJECT_LABEL] in [train_subject for train_subject in all_subject_id if train_subject != test_subject]:
+            if (sample[0, constants.ID_SUBJECT_LABEL] + 1) in [train_subject for train_subject in all_subject_id if train_subject != test_subject]:
                 train_list.append(sample)
 
-            elif sample[0, constants.ID_SUBJECT_LABEL] == test_subject:
+            elif (sample[0, constants.ID_SUBJECT_LABEL] + 1) == test_subject:
                 test_list.append(sample)
             
             else:
@@ -120,7 +135,9 @@ def main_net(args):
         optimizer = torch.optim.Adam(model.parameters(), lr = constants.LEARNING_RATE, weight_decay = constants.ADAM_WEIGHT_DECAY)
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', factor = constants.LEARNING_RATE_REDUCTION_FACTOR)
 
+        best_test_acc = 0.0
         print('--- Start the performance evaluation')
+        print("Num classes " + str(num_classes))
         for t in range(constants.NUM_EPOCHS):
             print(f'Epoch {t + 1}\n---------------------')
             temp_train_acc, temp_train_cm, _, _ = train_loop(train_dataloader, model, loss_fn, optimizer, num_classes, scheduler)
@@ -131,11 +148,19 @@ def main_net(args):
             perf_test_acc.append(temp_test_acc)
             print(perf_train_acc)
             print(perf_test_acc)
-
             perf_train_cm.append(temp_train_cm)
             perf_test_cm.append(temp_test_cm)
             perf_test_y_truth.append(temp_y_truth)
             perf_test_y_pred.append(temp_y_pred)
+
+            if temp_test_acc > best_test_acc:
+                best_test_acc = temp_test_acc
+                torch.save(model.state_dict(), f'{save_dir}/trained_model_subject_{test_subject}.pth')
+                print(f'New best model for subject {test_subject} with test accuracy {temp_test_acc * 100:.2f}% saved.')
+                
+            if t==constants.NUM_EPOCHS-1:
+                print("Best Accuracy = " + str(best_test_acc))            
+
 
 
 if __name__ == '__main__':

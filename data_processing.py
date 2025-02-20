@@ -1,5 +1,5 @@
 # name: data_processing.py
-# description: Process data from .csv files and store them into a single .pkl file
+# description: Process data from .csv files and store them into a single .pkl file``
 # author: Vu Phan
 
 
@@ -35,8 +35,9 @@ def main_processing(args):
     """ 
     args  = parse_processing_arguments() 
 
-    data_type   = args.data_type
-    dt_path     = get_data_folder(data_type)
+    data_type = args.data_type
+    dt_path = get_data_folder(data_type)
+    # print folders in dt_path
 
     if data_type == 'imu':
         downsample_factor = args.downsample_factor # TODO: ADD PROCESSING FOR DATA DOWNSAMPLING

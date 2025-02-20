@@ -30,7 +30,7 @@ def main_clustering(args):
     data_type = args.data_type
     if data_type == 'imu':
         print('* Using IMU data')
-        data_filename = 'data_processed/data_imu_10_both.pkl'
+        data_filename = 'testing_processed/data_imu_10_both.pkl'
     elif data_type == 'jk':
         print('* Using joint kinematics')
         data_filename = 'data_processed/data_jk.pkl'
@@ -41,7 +41,7 @@ def main_clustering(args):
         sample_list = pickle.load(f)
 
     avg_data_frame = prepare_data_4_clustering(sample_list)
-    fit_cluster = cluster_data(avg_data_frame, method = 'kmeans', num_clusters = 10)
+    fit_cluster = cluster_data(avg_data_frame, method = 'kmeans', num_clusters = 8)
 
 
     fig, ax = plt.subplots()
