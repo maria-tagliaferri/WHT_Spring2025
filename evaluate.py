@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# name: evaluate.py
-# description: Evaluate a 37-class model on test data for 8 desired exercises.
-#              The model outputs 37-class predictions (full exercise list) which are mapped
-#              to the 8 desired classes for evaluation.
-#              Outputs per-exercise accuracies, an 8x8 confusion matrix, and exports a summary CSV.
-# author: slevy2
-
 import os
 import pickle
 import torch
@@ -167,7 +159,7 @@ def main():
     for test_subject in unique_subjects:
         print(f"\nEvaluating model for subject {test_subject}")
         # Adjust hyperparameter lookup if training subjects were 1-indexed.
-        hp_point = constants.TUNED_HP[test_subject + 1]  # mapping test subject code 0 -> subject 1, etc.
+        hp_point = constants.TUNED_HP[test_subject + 1]  # mapping test subject code
         s_num_out     = hp_point[constants.ID_NUM_OUT]
         s_kernel_size = hp_point[constants.ID_KERNEL_SIZE]
         s_stride      = hp_point[constants.ID_STRIDE]
